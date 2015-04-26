@@ -29,3 +29,10 @@ with description('movie finder'):
             self.finder.discover(self.test_dir)
 
             assert 'Alien' in self.finder.movies, self.finder.movies
+
+        with it('does not create noisy entries for hidden files found'):
+            self.finder.discover(self.test_dir)
+
+            assert 'hidden' not in self.finder.movies, self.finder.movies
+            assert None not in self.finder.movies, self.finder.movies
+            assert '' not in self.finder.movies, self.finder.movies

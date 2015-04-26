@@ -1,5 +1,6 @@
 import os
 
+
 class Finder(object):
 
     def __init__(self):
@@ -7,7 +8,7 @@ class Finder(object):
         self._movies = []
 
     def discover(self, path):
-        files_in_path = os.listdir(path)
+        files_in_path = [f for f in os.listdir(path) if not f.startswith('.')]
         self._directors = self._extract_directors(files_in_path)
         self._movies = self._extract_movies(files_in_path)
 
