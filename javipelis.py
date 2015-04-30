@@ -4,21 +4,22 @@ if os.name == 'nt':
     import win32api, win32con
 
 
-def is_hidden(_file):
-    if os.name == 'nt':
-        attribute = win32api.GetFileAttributes(_file)
-        return attribute & (win32con.FILE_ATTRIBUTE_HIDDEN | win32con.FILE_ATTRIBUTE_SYSTEM)
-    else:
-        return _file.startswith('.')
-
 class Finder(object):
 
     def __init__(self):
         self._directors = []
         self._movies = []
 
+    @property
+    def directors(self):
+        return self._directors
+
+    @property
+    def movies(self):
+        return self._movies
+
     def discover(self, path):
-        files_in_path = [f for f in os.listdir(path) if not is_hidden(f)]
+        files_in_path = [f for f in os.listdir(path) if not self._is_hidden(f)]
         self._directors = self._extract_directors(files_in_path)
         self._movies = self._extract_movies(files_in_path)
 
@@ -40,10 +41,9 @@ class Finder(object):
         if len(filename.split('.')) > 1:
             return filename.split('.')[1]
 
-    @property
-    def directors(self):
-        return self._directors
-
-    @property
-    def movies(self):
-        return self._movies
+    def _is_hidden(self, _file):
+        if os.name == 'nt':
+            attribute = win32api.GetFileAttributes(_file)
+            return attribute & (win32con.FILE_ATTRIBUTE_HIDDEN | win32con.FILE_ATTRIBUTE_SYSTEM)
+        else:
+            return _file.startswith('.')
