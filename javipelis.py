@@ -23,6 +23,9 @@ class Finder(object):
         self._directors = self._extract_directors(files_in_path)
         self._movies = self._extract_movies(files_in_path)
 
+    def movie_titles(self):
+        return [movie.get('title') for movie in self.movies]
+
     def _extract_directors(self, filenames_list):
         return [self._get_director_name(filename).strip()
                 for filename in filenames_list
@@ -33,13 +36,24 @@ class Finder(object):
             return filename.split('.')[0]
 
     def _extract_movies(self, filenames_list):
-        return [self._get_movie_title(filename).strip()
+        return [self._movie_info(filename)
                 for filename in filenames_list
-                if self._get_movie_title(filename)]
+                if self._movie_title(filename)]
 
-    def _get_movie_title(self, filename):
+    def _movie_title(self, filename):
         if len(filename.split('.')) > 1:
-            return filename.split('.')[1]
+            return filename.split('.')[1].strip()
+
+    def _movie_year(self, filename):
+        if len(filename.split('.')) > 1:
+            try:
+                return filename.split('.')[2].strip()
+            except IndexError:
+                return filename.split('.')[-1].split(',')[-1].strip()
+
+    def _movie_info(self, filename):
+        return {'title': self._movie_title(filename),
+                'year': self._movie_year(filename)}
 
     def _is_hidden(self, _file):
         if os.name == 'nt':

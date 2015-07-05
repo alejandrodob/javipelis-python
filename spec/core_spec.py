@@ -28,7 +28,7 @@ with description('movie finder'):
         with it('stores the title of the movies found for each director'):
             self.finder.discover(self.test_dir)
 
-            assert 'Alien' in self.finder.movies, self.finder.movies
+            assert 'Alien' in self.finder.movie_titles(), self.finder.movie_titles()
 
         with it('does not create noisy entries for hidden files found'):
             self.finder.discover(self.test_dir)
@@ -36,3 +36,8 @@ with description('movie finder'):
             assert 'hidden' not in self.finder.movies, self.finder.movies
             assert None not in self.finder.movies, self.finder.movies
             assert '' not in self.finder.movies, self.finder.movies
+
+        with it('stores the year of the movie, if exists'):
+            self.finder.discover(self.test_dir)
+
+            assert '1971' in [movie.get('year') for movie in self.finder.movies]
