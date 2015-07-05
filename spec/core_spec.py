@@ -35,3 +35,8 @@ with description('movie finder'):
         with it('stores the year of the movie, if exists'):
 
             assert '1971' in [movie.get('year') for movie in self.finder.movies]
+
+        with it('adds movies for files that are not in a folder'):
+
+            assert 'Saving Private Ryan' in self.finder.movie_titles()
+            assert 'Spielberg, Steven' in self.finder.directors

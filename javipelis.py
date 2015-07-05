@@ -23,6 +23,7 @@ class Finder(object):
         files_in_path = [f for f in os.listdir(path) if not self._is_hidden(f)]
         self._directors = self._extract_directors(files_in_path)
         self._movies = self._extract_movies(files_in_path)
+        print files_in_path
 
     def movie_titles(self):
         return [movie.get('title') for movie in self.movies]
