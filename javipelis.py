@@ -6,9 +6,10 @@ if os.name == 'nt':
 
 class Finder(object):
 
-    def __init__(self):
+    def __init__(self, root_path):
         self._directors = []
         self._movies = []
+        self.discover(root_path)
 
     @property
     def directors(self):
